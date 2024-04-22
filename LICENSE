@@ -1,6 +1,15 @@
+NPOSL-3.0
+
+vite-plugin-javascript-obfuscator-generate-bundle: (C) 2024 Wilson Foo Yu Kang. All rights reserved except as expressly set out hereinafter.
+Unrestricted sole licence granted to Custom Automated Systems (R) Pte Ltd, revocable with express written notice by Wilson Foo Yu Kang.
+
+Dual licensed under:
+NPOSL-3.0 https://opensource.org/licenses/NPOSL-3.0
+Proprietary sub-licence with Custom Automated Systems Pte Ltd (contact sales@customautosys.com to negotiate licence terms)
+
 MIT License
 
-Copyright (c) 2022 elmeet
+vite-plugin-javascript-obfuscator: Copyright (c) 2022 elmeet
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

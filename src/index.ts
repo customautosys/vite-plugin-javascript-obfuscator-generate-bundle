@@ -68,18 +68,18 @@ export default function obfuscatorPlugin(obOptions?: Options) {
     : defaultExcludeMatcher;
 
   return <Plugin>{
-    name: "vite-plugin-javascript-obfuscator",
+    name: "vite-plugin-javascript-obfuscator-generate-bundle",
     enforce: "post" as "post",
     apply: obOptions?.apply || (() => true),
     generateBundle(outputOptions: NormalizedOutputOptions, bundle: OutputBundle) {
       for(let fileName in bundle){
         if (anymatch(excludeMatcher, fileName, { dot: true })) {
-          consoleLog("[::plugin-javascript-obfuscator]::exclude", fileName);
+          consoleLog("[::plugin-javascript-obfuscator-generate-bundle]::exclude", fileName);
           return;
         }
 
         if (anymatch(includeMatcher, fileName) && bundle[fileName].type==='chunk') {
-          consoleLog("[::plugin-javascript-obfuscator]::include matched", fileName);
+          consoleLog("[::plugin-javascript-obfuscator-generate-bundle]::include matched", fileName);
 
           const obfuscationResult = obfuscate((bundle[fileName] as OutputChunk).code, options);
 
@@ -101,7 +101,7 @@ export default function obfuscatorPlugin(obOptions?: Options) {
           });
         }
 
-        consoleLog(`[::plugin-javascript-obfuscator]::not matched`, fileName);
+        consoleLog(`[::plugin-javascript-obfuscator-generate-bundle]::not matched`, fileName);
       }
     }
   };

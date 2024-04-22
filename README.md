@@ -1,14 +1,14 @@
-# vite-plugin-javascript-obfuscator
+# vite-plugin-javascript-obfuscator-generate-bundle
 
-A Vite Plugin for [javascript-obfuscator](https://www.npmjs.com/package/javascript-obfuscator)
+A Vite Plugin for [javascript-obfuscator](https://www.npmjs.com/package/javascript-obfuscator) which uses the generateBundle hook instead
 
 ## Installation
 
 Install the package:
 
-- npm `npm install --save-dev vite-plugin-javascript-obfuscator`
-- yarn `yarn add --dev vite-plugin-javascript-obfuscator`
-- pnpm `pnpm i vite-plugin-javascript-obfuscator -D`
+- npm `npm install --save-dev vite-plugin-javascript-obfuscator-generate-bundle`
+- yarn `yarn add --dev vite-plugin-javascript-obfuscator-generate-bundle`
+- pnpm `pnpm i vite-plugin-javascript-obfuscator-generate-bundle -D`
 
 ## Usage
 
@@ -17,7 +17,7 @@ Install the package:
 vite.config.js
 
 ```javascript
-import obfuscatorPlugin from "vite-plugin-javascript-obfuscator";
+import obfuscatorPlugin from "vite-plugin-javascript-obfuscator-generate-bundle";
 
 export default defineConfig({
   plugins: [
@@ -37,7 +37,7 @@ export default defineConfig({
 vite.config.js
 
 ```javascript
-import obfuscatorPlugin from "vite-plugin-javascript-obfuscator";
+import obfuscatorPlugin from "vite-plugin-javascript-obfuscator-generate-bundle";
 
 export default defineConfig({
   plugins: [
