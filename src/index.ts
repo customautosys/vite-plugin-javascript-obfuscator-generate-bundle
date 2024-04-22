@@ -1,6 +1,12 @@
 import { obfuscate, ObfuscatorOptions } from "javascript-obfuscator";
 import anymatch, { Matcher } from "anymatch";
 import { resolve } from "path";
+import type {
+  Plugin,
+  NormalizedOutputOptions,
+  OutputBundle,
+  OutputChunk
+} from "rollup";
 
 const defaultIncludeMatcher = [/\.(jsx?|tsx?|cjs|mjs)$/];
 const defaultExcludeMatcher = [/node_modules/, /\.nuxt/];
@@ -61,33 +67,42 @@ export default function obfuscatorPlugin(obOptions?: Options) {
     ? handleMatcher(exclude)
     : defaultExcludeMatcher;
 
-  return {
+  return <Plugin>{
     name: "vite-plugin-javascript-obfuscator",
     enforce: "post" as "post",
     apply: obOptions?.apply || (() => true),
-    transform(src: string, id: string) {
-      if (anymatch(excludeMatcher, id, { dot: true })) {
-        consoleLog("[::plugin-javascript-obfuscator]::exclude", id);
-        return;
-      }
-
-      if (anymatch(includeMatcher, id)) {
-        consoleLog("[::plugin-javascript-obfuscator]::include matched", id);
-
-        const obfuscationResult = obfuscate(src, options);
-
-        const result = { code: obfuscationResult.getObfuscatedCode() } as {
-          map: string;
-          code: string;
-        };
-
-        if (options?.sourceMap && options?.sourceMapMode !== "inline") {
-          result.map = obfuscationResult.getSourceMap();
+    generateBundle(outputOptions: NormalizedOutputOptions, bundle: OutputBundle) {
+      for(let fileName in bundle){
+        if (anymatch(excludeMatcher, fileName, { dot: true })) {
+          consoleLog("[::plugin-javascript-obfuscator]::exclude", fileName);
+          return;
         }
-        return result;
-      }
 
-      consoleLog(`[::plugin-javascript-obfuscator]::not matched`, id);
-    },
+        if (anymatch(includeMatcher, fileName) && bundle[fileName].type==='chunk') {
+          consoleLog("[::plugin-javascript-obfuscator]::include matched", fileName);
+
+          const obfuscationResult = obfuscate((bundle[fileName] as OutputChunk).code, options);
+
+          const result = { code: obfuscationResult.getObfuscatedCode() } as {
+            map: string;
+            code: string;
+          };
+
+          if (options?.sourceMap && options?.sourceMapMode !== "inline") {
+            result.map = obfuscationResult.getSourceMap();
+          }
+
+          delete bundle[fileName];
+
+          this.emitFile({
+            type:'asset',
+            fileName,
+            source:result.code
+          });
+        }
+
+        consoleLog(`[::plugin-javascript-obfuscator]::not matched`, fileName);
+      }
+    }
   };
 }
